@@ -1,0 +1,7 @@
+{
+  "string": [
+    { "name": "module_desc", "value": "entry module" },
+    { "name": "ability_desc", "value": "HarmonyBrowser main ability" },
+    { "name": "ability_label", "value": "HarmonyBrowser" }
+  ]
+}

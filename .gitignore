@@ -1,0 +1,22 @@
+# HarmonyOS build output
+build/
+.output/
+.cxx/
+
+# IDE
+.idea/
+*.iml
+.local/
+
+# Node
+node_modules/
+oh_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+*.tmp
+*.log
+.hvigor/

@@ -1,0 +1,8 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/BookmarkPage",
+    "pages/HistoryPage",
+    "pages/SettingsPage"
+  ]
+}
