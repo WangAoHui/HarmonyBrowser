@@ -1,10 +1,11 @@
 import { preferences } from '@kit.ArkData';
 import { Context } from '@kit.AbilityKit';
-import { BookmarkItem, HistoryItem } from '../model/BrowserData';
+import { BookmarkItem, HistoryItem, SearchEngine, SEARCH_ENGINES } from '../model/BrowserData';
 
 const PREFS_NAME = 'browser_data';
 const KEY_BOOKMARKS = 'bookmarks';
 const KEY_HISTORY = 'history';
+const KEY_SEARCH_ENGINE = 'search_engine';
 
 function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
@@ -115,5 +116,31 @@ export class DataManager {
   async clearAllData(): Promise<void> {
     await this.prefs?.clear();
     await this.prefs?.flush();
+  }
+
+  // ======================== 搜索引擎 ========================
+
+  // 获取当前搜索引擎（默认 Bing）
+  async getSearchEngine(): Promise<SearchEngine> {
+    const id = await this.prefs?.get(KEY_SEARCH_ENGINE, 'bing') as string;
+    return SEARCH_ENGINES.find(e => e.id === id) || SEARCH_ENGINES[0];
+  }
+
+  // 设置搜索引擎
+  async setSearchEngine(engineId: string): Promise<void> {
+    await this.prefs?.put(KEY_SEARCH_ENGINE, engineId);
+    await this.prefs?.flush();
+  }
+
+  // 根据搜索引擎构建搜索 URL
+  async buildSearchUrl(query: string): Promise<string> {
+    const engine = await this.getSearchEngine();
+    return engine.searchUrl.replace('{query}', encodeURIComponent(query));
+  }
+
+  // 获取当前搜索引擎首页 URL
+  async getSearchEngineHomeUrl(): Promise<string> {
+    const engine = await this.getSearchEngine();
+    return engine.homeUrl;
   }
 }

@@ -2,8 +2,7 @@ import { webview } from '@kit.ArkWeb';
 import { router } from '@kit.ArkUI';
 import { DataManager } from '../common/DataManager';
 import { CookieManager } from '../common/CookieManager';
-
-const HOME_URL = 'https://www.bing.com';
+import { SearchEngine, SEARCH_ENGINES } from '../model/BrowserData';
 
 @Entry
 @Component
@@ -13,12 +12,15 @@ struct Index {
   // 数据管理
   private dataManager: DataManager = DataManager.getInstance();
   // URL 输入
-  @State urlInput: string = HOME_URL;
-  @State currentUrl: string = HOME_URL;
+  @State homeUrl: string = 'https://www.bing.com';
+  @State urlInput: string = '';
+  @State currentUrl: string = '';
   @State pageTitle: string = '首页';
   @State isLoading: boolean = false;
   @State progress: number = 0;
   @State isBookmarked: boolean = false;
+  // 当前搜索引擎
+  @State currentSearchEngine: SearchEngine = SEARCH_ENGINES[0]; // 默认 Bing
   // 底部菜单
   @State showMenu: boolean = false;
   // 是否编辑模式（地址栏获焦）
@@ -28,14 +30,22 @@ struct Index {
 
   aboutToAppear(): void {
     this.dataManager.init(getContext(this));
-    this.checkBookmarkStatus();
+    this.loadSearchEngine();
+  }
+
+  private async loadSearchEngine(): Promise<void> {
+    const engine = await this.dataManager.getSearchEngine();
+    this.currentSearchEngine = engine;
+    this.homeUrl = engine.homeUrl;
+    this.currentUrl = engine.homeUrl;
+    this.urlInput = engine.homeUrl;
   }
 
   // ==================== URL 处理 ====================
 
   private normalizeUrl(input: string): string {
     let url = input.trim();
-    if (!url) return HOME_URL;
+    if (!url) return this.homeUrl;
     // 判断是否像 URL（包含 . 或以 / 结尾）
     if (url.includes('.') && !url.includes(' ')) {
       if (!url.startsWith('http://') && !url.startsWith('https://')) {
@@ -43,8 +53,8 @@ struct Index {
       }
       return url;
     }
-    // 否则当搜索关键词处理
-    return `https://www.bing.com/search?q=${encodeURIComponent(url)}`;
+    // 否则当搜索关键词处理 — 使用用户选择的搜索引擎
+    return this.currentSearchEngine.searchUrl.replace('{query}', encodeURIComponent(url));
   }
 
   private navigateTo(url: string): void {
@@ -176,7 +186,7 @@ struct Index {
           .margin({ right: 6 })
           .visibility(this.currentUrl.startsWith('https') ? Visibility.Visible : Visibility.Hidden)
 
-        TextInput({ text: this.urlInput, placeholder: '搜索或输入网址' })
+        TextInput({ text: this.urlInput, placeholder: `${this.currentSearchEngine.name} 搜索或输入网址` })
           .layoutWeight(1)
           .height(36)
           .fontSize(14)
@@ -258,7 +268,7 @@ struct Index {
       })
       // 主页
       this.ToolBtn('⌂', '主页', () => {
-        this.navigateTo(HOME_URL);
+        this.navigateTo(this.homeUrl);
       })
       // 菜单
       this.ToolBtn('☰', '菜单', () => {
