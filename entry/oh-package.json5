@@ -1,5 +1,6 @@
 {
   "name": "entry",
+  "modelVersion": "6.0.2",
   "version": "3.0.0",
   "description": "A HarmonyOS browser built with ArkWeb (API 20 / HarmonyOS 6.0.1)",
   "main": "",
