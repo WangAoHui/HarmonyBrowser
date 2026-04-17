@@ -385,9 +385,9 @@ struct SettingsPage {
           Column() {
             this.SettingItem('应用名称', 'HarmonyBrowser', '#333333', () => {})
             Divider().color(this.currentTheme.borderColor).margin({ left: 16 })
-            this.SettingItem('版本', '2.0.0', '#333333', () => {})
+            this.SettingItem('版本', '3.0.0 (API 20)', '#333333', () => {})
             Divider().color(this.currentTheme.borderColor).margin({ left: 16 })
-            this.SettingItem('内核', 'ArkWeb (HarmonyOS)', '#333333', () => {})
+            this.SettingItem('内核', 'ArkWeb (HarmonyOS 6.0.1)', '#333333', () => {})
             Divider().color(this.currentTheme.borderColor).margin({ left: 16 })
             this.SettingItem('开发者', 'WangAoHui', '#333333', () => {})
             Divider().color(this.currentTheme.borderColor).margin({ left: 16 })

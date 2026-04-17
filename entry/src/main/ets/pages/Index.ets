@@ -279,12 +279,15 @@ struct Index {
         // 夜间模式：深色方案强制
         .darkMode(this.currentTheme.mode === 'dark' ? WebDarkMode.On : WebDarkMode.Off)
         .forceDarkAccess(this.currentTheme.mode === 'dark')
-        // 广告拦截：通过 onInterceptorRequest 拦截
-        .onInterceptorRequest((event) => {
-          if (event && event.request && this.shouldBlockRequest(event.request.getRequestUrl())) {
-            return true; // 拦截请求
+        // 广告拦截：通过 onInterceptRequest 拦截
+        .onInterceptRequest((event) => {
+          if (event && event.request) {
+            const reqUrl = event.request.getUrl();
+            if (reqUrl && this.shouldBlockRequest(reqUrl)) {
+              return new WebResourceResponse('text/plain', 'UTF-8', 200, '');
+            }
           }
-          return false;
+          return null;
         })
         // 页面加载进度
         .onProgressChange((event) => {
@@ -325,7 +328,7 @@ struct Index {
           }
         })
         // 新窗口请求
-        .onNewPush((event) => {
+        .onNewWindow((event) => {
           if (event) {
             this.navigateTo(event.url);
           }

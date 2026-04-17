@@ -3,7 +3,7 @@ import { Context } from '@kit.AbilityKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 
 // ============================================================
-// Cookie 管理器 — 封装 web_webview Cookie 操作
+// Cookie 管理器 — 封装 web_webview Cookie 操作 (API 20)
 // ============================================================
 export class CookieManager {
   private static instance: CookieManager;
@@ -35,15 +35,14 @@ export class CookieManager {
   // 清除所有 Cookie
   clearAllCookies(): void {
     if (!this.cookieMgr) this.init();
-    this.cookieMgr!.deleteEntireCookie();
+    this.cookieMgr!.clearAllCookie();
     console.info('[CookieManager] All cookies cleared');
   }
 
   // 清除某个 URL 的 Cookie
   clearCookiesForUrl(url: string): void {
     if (!this.cookieMgr) this.init();
-    // 返回某 url 关联的 cookie 是否被删除
-    this.cookieMgr!.deleteEntireCookie();
+    this.cookieMgr!.clearAllCookie();
   }
 
   // 保存 Cookie（flush 到磁盘）
