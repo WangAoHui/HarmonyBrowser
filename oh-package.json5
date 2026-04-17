@@ -1,0 +1,13 @@
+{
+  "license": "",
+  "devDependencies": {
+    "@ohos/hvigor-ohos-plugin": "6.0.2",
+    "@ohos/hvigor": "6.0.2"
+  },
+  "author": "",
+  "name": "harmonybrowser",
+  "description": "HarmonyBrowser - A web browser for HarmonyOS NEXT",
+  "main": "",
+  "version": "3.0.0",
+  "dependencies": {}
+}

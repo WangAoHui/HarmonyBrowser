@@ -2,13 +2,15 @@
 build/
 .output/
 .cxx/
+.hvigor/
 
 # IDE
 .idea/
 *.iml
 .local/
+preview/
 
-# Node
+# Node / ohpm
 node_modules/
 oh_modules/
 
@@ -19,4 +21,6 @@ Thumbs.db
 # Temp
 *.tmp
 *.log
-.hvigor/
+
+# ohpm lock (optional, uncomment if you want to track it)
+# oh-package-lock.json5
